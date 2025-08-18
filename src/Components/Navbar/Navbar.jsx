@@ -7,7 +7,7 @@ const Navbar = () => {
         <div className='flex justify-between'>
             <div className=""></div>
             <div className="nav flex ">
-                <ul className='flex justify-around gap-5 text-base-200'>
+                <ul className='flex justify-around items-center  gap-5 text-base-200'>
                     <NavLink to='/'><li>Home</li></NavLink>
                     <NavLink to='/about'><li>About</li></NavLink>
                     <NavLink to='/career'><li>Career</li></NavLink>
