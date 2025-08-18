@@ -1,5 +1,6 @@
 import React from 'react';
 import { CiBookmark } from 'react-icons/ci';
+import { FaStar } from 'react-icons/fa';
 import { MdRemoveRedEye } from 'react-icons/md';
 import { TbChartDots3 } from 'react-icons/tb';
 
@@ -37,18 +38,26 @@ const Newscard = ({ news }) => {
                 <img src={thumbnail_url} alt="Thumbnail" className="w-full rounded-lg object-cover" />
             </figure>
             <div className="card-body p-4">
+            {details.length > 200 ? (
+                <>
+                    {details.slice(0,200)}...
+                    <span className='font-semibold text-primary cursor-pointer hover:underline text-red-400'>Read More</span>
+                </>
+            ):
+            (
+                details
 
-                <p className="text-gray-700 mt-2 text-base">{details.slice(0, 200)}...</p>
-                <div className="card-actions ">
-                    <button className="text-[#FF8C47] font-bold btn-sm">Read More</button>
-                </div>
+            ) }
             </div>
             <div className="border-t-2 border-dotted border-gray-300 my-4"></div>
             <div className="flex justify-between items-center ">
-                <div className="flex items-center space-x-1">
-                    <span className="text-[#FF8C47]">⭐⭐⭐⭐⭐</span>
-                    <span>{rating.number}</span>
-                </div>
+               {/* Rating */}
+               <div className='flex items-center gap-1 text-orange-400'>
+                {Array.from({length:rating.number}).map((_, i)=>(
+                    <FaStar key={i}></FaStar>
+                ))}
+                <span className='ml-2 text-gray-600'>{rating.number}</span>
+               </div>
                 <div className="card-footer flex items-center gap-3 justify-between p-4">
                     <MdRemoveRedEye />
                 <span className="text-sm text-gray-500">
