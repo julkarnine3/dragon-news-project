@@ -3,6 +3,7 @@ import { CiBookmark } from 'react-icons/ci';
 import { FaStar } from 'react-icons/fa';
 import { MdRemoveRedEye } from 'react-icons/md';
 import { TbChartDots3 } from 'react-icons/tb';
+import { Link } from 'react-router';
 
 const Newscard = ({ news }) => {
     const {
@@ -14,7 +15,8 @@ const Newscard = ({ news }) => {
         image_url,
         details,
         tags,
-        others
+        others,
+        id
     } = news;
 
     return (
@@ -41,7 +43,7 @@ const Newscard = ({ news }) => {
             {details.length > 200 ? (
                 <>
                     {details.slice(0,200)}...
-                    <span className='font-semibold text-primary cursor-pointer hover:underline text-red-400'>Read More</span>
+                <Link to={`/news-details/${id}`} className='font-semibold text-primary cursor-pointer hover:underline text-red-400'>Read More</Link>
                 </>
             ):
             (

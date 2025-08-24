@@ -1,29 +1,46 @@
-import React, { use } from 'react';
-import { Link } from 'react-router';
+import React, { use, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import { AuthContext } from '../Provider/AuthProvider';
 
 const Register = () => {
-    const {createUser,setUser} = use(AuthContext);
+    const { createUser, setUser, updateUser } = use(AuthContext);
+    const [errorName, setErrorName] = useState("");
+    const navigate = useNavigate()
     const handleRegister = (e) => {
         e.preventDefault();
         const form = e.target;
         const name = form.name.value;
+        if(name.length < 5){
+            setErrorName("Please give your name more than 5 characters!");
+            return
+        }
+        else{
+            setErrorName("");
+        }
         const photo = form.photo.value;
         const email = form.email.value;
         const password = form.password.value;
         // console.log({name, photo, email, password});
 
         // SignUp user
-        createUser(email,password)
-        .then(result=>{
-            const user = result.user;
-            setUser(user);
-
-        })
-        .catch(error =>{
-            const errorMessage = error.message;
-            console.log(errorMessage);
-        })
+        createUser(email, password)
+            .then(result => {
+                const user = result.user;
+                //Update user
+                updateUser({displayName: name,photoURL: photo})
+                .then(()=>{
+                    setUser({...user, displayName: name,photoURL: photo});
+                    navigate('/');
+                })
+                .catch((error)=>{
+                    console.log(error);
+                    setUser(user);
+                });
+            })
+            .catch(error => {
+                const errorMessage = error.message;
+                console.log(errorMessage);
+            })
     }
     return (
         <div className='flex justify-center items-center pt-0 min-h-screen'>
@@ -40,6 +57,7 @@ const Register = () => {
                             placeholder="Name"
                             required
                         />
+                        {errorName && <p className='text-error text-red-500'>{errorName}</p>}
                         {/* Photo url*/}
                         <label className="label">Photo URL</label>
                         <input

@@ -1,9 +1,13 @@
-import React, { use } from 'react';
-import { Link } from 'react-router';
+import React, { use, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../Provider/AuthProvider';
 
 const Login = () => {
     const { signIn } = use(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [error, setError] = useState();
+    // console.log(location);
     const handleSignIn = (e) => {
         e.preventDefault();
         const form = e.target;
@@ -14,11 +18,13 @@ const Login = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
+                navigate(`${location.state ? location.state : "/"}`);
             })
             .catch(error => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorCode,errorMessage)
+                // alert(errorMessage);
+                setError(errorCode);
             })
     }
     return (
@@ -34,6 +40,7 @@ const Login = () => {
                             className="input"
                             placeholder="Email"
                             name='email'
+                            required
                         />
                         {/* Password */}
                         <label className="label">Password</label>
@@ -42,10 +49,12 @@ const Login = () => {
                             className="input"
                             placeholder="Password"
                             name='password'
+                            required
                         />
                         <div><a className="link link-hover">Forgot password?</a></div>
                         <button className="btn bg-[#F9A51A] btn-neutral border-0 text-black mt-4">Login</button>
                     </form>
+                    {error && <p className='text-red-500 text-xs text-center'>Email or password invalid!</p>}
                     <p className='font-semibold text-center'>Don't have any account?  <Link className='text-[#F9A51A] hover:underline' to='/auth/register'>Create an account</Link> </p>
                 </div>
             </div>
